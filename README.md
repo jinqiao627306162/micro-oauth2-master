@@ -1,4 +1,10 @@
 # micro-oauth2-master
+gateway 整合spring security oauth2前提：
+<spring-cloud.version>Hoxton.SR5<
+/spring-cloud.version> <version>2.3.0.RELEASE</version>
+ <version>2.3.0.RELEASE</version>
+
+
 # idea导入项目
 
 # add Frameworks Support
