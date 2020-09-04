@@ -1,0 +1,46 @@
+server:
+  port: 9201
+spring:
+  profiles:
+    active: dev
+  application:
+    name: micro-oauth2-gateway
+  cloud:
+    gateway:
+      routes: #配置路由路径
+        - id: oauth2-api-route
+          uri: http://localhost:9501/**
+          predicates:
+            - Path=/api/**
+          filters:
+            - StripPrefix=1
+        - id: oauth2-auth-route
+          uri: http://micro-oauth2-auth/**
+          predicates:
+            - Path=/auth/**
+          filters:
+            - StripPrefix=1
+      discovery:
+        locator:
+          enabled: true #开启从注册中心动态创建路由的功能
+          lower-case-service-id: true #使用小写服务名，默认是大写
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: 'http://localhost:9401/rsa/publicKey' #配置RSA的公钥访问地址
+  redis:
+    database: 0
+    port: 6385
+    host: 192.168.88.19
+secure:
+  ignore:
+    urls: #配置白名单路径
+      - "/actuator/**"
+      - "/auth/oauth/token"
+eureka:
+  client:
+    register-with-eureka: true #注册到Eureka的注册中心
+    fetch-registry: true #获取注册实例列表
+    service-url:
+      defaultZone: http://localhost:8001/eureka/ #配置注册中心地址
